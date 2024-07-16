@@ -12,11 +12,11 @@ public class UserService:IUserService
             new User { Id = 2, Username = "maham", Password = "maham" }
         };
 
-    //public Task<User?> Authenticate(string username, string password)
-    //{
-    //    var user = _users.SingleOrDefault(x => x.Username == username && x.Password == password);
-    //    return Task.FromResult(user);
-    //}
+    public Task<User?> Authenticate(string username, string password)
+    {
+        var user = _users.SingleOrDefault(x => x.Username == username && x.Password == password);
+        return Task.FromResult(user);
+    }
 
     private readonly HttpClient _httpClient;
 
@@ -25,17 +25,17 @@ public class UserService:IUserService
         _httpClient = httpClient;
     }
 
-    public async Task<User?> Authenticate(string username, string password)
-    {
+    //public async Task<User?> Authenticate(string username, string password)
+    //{
 
 
 
-        var response = await _httpClient.PostAsJsonAsync("https://api.example.com/login", new { username, password });
-        response.EnsureSuccessStatusCode();
+    //    var response = await _httpClient.PostAsJsonAsync("https://api.example.com/login", new { username, password });
+    //    response.EnsureSuccessStatusCode();
 
-        var responseBody = await response.Content.ReadAsStringAsync();
-        var user = JsonSerializer.Deserialize<User>(responseBody, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+    //    var responseBody = await response.Content.ReadAsStringAsync();
+    //    var user = JsonSerializer.Deserialize<User>(responseBody, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
-        return user;
-    }
+    //    return user;
+    //}
 }

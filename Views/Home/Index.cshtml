@@ -15,7 +15,7 @@
                 <div class="tabs tab-content">
                     <div id="content_1" class="tabcontent">
                         @* @Html.Partial("_Chart1", new Chart1()) *@
-                        @await Component.InvokeAsync("Chart1", new Chart1() )
+                        @await Component.InvokeAsync("Chart1", new Chart1())
 
                     </div>
                 </div>
@@ -54,8 +54,10 @@
 
 
     <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-12 layout-spacing">
-         @await Component.InvokeAsync("Wallet", new Wallet() { Balance = 2222 }) 
+        @await Component.InvokeAsync("Wallet", new Wallet() { Balance = 2222 })
     </div>
 
 
 </div>
+
+
