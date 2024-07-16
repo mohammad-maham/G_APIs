@@ -1,8 +1,61 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
+﻿
+<div class="row layout-top-spacing">
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <div class="col-xl-8 col-lg-12 col-md-12 col-sm-12 col-12 layout-spacing">
+
+        <div class="widget widget-chart-one">
+            <div class="widget-heading">
+                <h5 class="">نمودار 1</h5>
+                @* <ul class="tabs tab-pills">
+                <li><a href="javascript:void(0);" id="tb_1" class="tabmenu">Monthly</a></li>
+                </ul> *@
+            </div>
+
+            <div class="widget-content">
+                <div class="tabs tab-content">
+                    <div id="content_1" class="tabcontent">
+                        @* @Html.Partial("_Chart1", new Chart1()) *@
+                        @await Component.InvokeAsync("Chart1", new Chart1() )
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12 col-12 layout-spacing">
+        <div class="widget widget-chart-two">
+            <div class="widget-heading">
+                <h5 class="">    نمودار 2</h5>
+            </div>
+            <div class="widget-content">
+                @* @Html.Partial("_Chart2", new Chart2()) *@
+                @await Component.InvokeAsync("Chart2", new Chart2())
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-xl-8 col-lg-6 col-md-6 col-sm-12 col-12 layout-spacing">
+        <div class="widget widget-chart-three">
+            <div class="widget-heading">
+                <div class="">
+                    <h5 class="">نمودار 3</h5>
+                </div>
+            </div>
+
+            <div class="widget-content">
+                @* @Html.Partial("_Chart3", new Chart3()) *@
+                @await Component.InvokeAsync("Chart3", new Chart3())
+            </div>
+        </div>
+    </div>
+
+
+    <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-12 layout-spacing">
+         @await Component.InvokeAsync("Wallet", new Wallet() { Balance = 2222 }) 
+    </div>
+
+
 </div>
