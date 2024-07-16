@@ -77,10 +77,10 @@
 
 
                             </div>
-
-                            <button class="btn btn-primary submit-fn mt-2 text-right float-left" type="submit">  ورود</button>
+               
                             <div class="field-wrapper">
-                                <a href="auth_pass_recovery.html" class="forgot-pass-link">  فراموشی رمز عبور؟</a>
+                                <a href="auth_pass_recovery.html" class="forgot-pass-link float-left">  فراموشی رمز عبور؟</a>
+                                <button class="btn btn-primary submit-fn mt-2  float-right" type="submit">  ورود</button>
                             </div>
 
                         </form>
@@ -111,6 +111,7 @@
             validation: true,
             url: '/Account/Login',
             success: function (response) {
+
                 if (response.result) {
 
                     window.location.href = '/Home';
@@ -118,7 +119,7 @@
                     $('#loginResult').html('رمز عبور یا نام کاربری اشتباه است').removeClass('d-none');
                 }
             },
-            error: function (xhr, status, error) {
+            error: (xhr, status, error) {
                 $('#loginResult').html('خطایی رخ داده لطفا دوباره تلاش نمایید.').removeClass('d-none');
                 console.error('Form submission failed:', error);
             }

@@ -1,4 +1,5 @@
 ﻿using G_APIs.BussinesLogic.Interface;
+using G_APIs.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
@@ -22,15 +23,15 @@ public class AccountController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> Login(string username, string password)
+    public async Task<IActionResult> Login(User model)
     {
-        var loginResult = await _userService.Authenticate(username, password);
+        var loginResult = await _userService.Authenticate(model.Username, model.Password);
 
         if (loginResult != null)
         {
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Name, username)
+                new Claim(ClaimTypes.Name, model.Username)
             };
 
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
