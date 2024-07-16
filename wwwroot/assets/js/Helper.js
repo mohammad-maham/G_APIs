@@ -10,10 +10,8 @@
             error: function (xhr, status, error) { }
         }, options);
 
-        console.log((this));
-
         this.each(function () {
-
+        
             var form = $(this);
             form.on('submit', function (e) {
 
