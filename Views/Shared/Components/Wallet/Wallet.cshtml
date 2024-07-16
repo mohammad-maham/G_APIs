@@ -1,0 +1,49 @@
+﻿ @model Wallet;
+
+<div class="widget widget-account-invoice-one">
+
+    <div class="widget-heading">
+        <h5 class="">کیف پول</h5>
+    </div>
+
+    <div class="widget-content">
+        <div class="invoice-box">
+
+            <div class="acc-total-info">
+                <h5>موجودی</h5>
+                <p class="acc-amount">@Model.Balance</p>
+            </div>
+
+            <div class="inv-detail">
+                <div class="info-detail-1">
+                    <p>Monthly Plan</p>
+                    <p>  199.0</p>
+                </div>
+                <div class="info-detail-2">
+                    <p>Taxes</p>
+                    <p>  17.82</p>
+                </div>
+                <div class="info-detail-3 info-sub">
+                    <div class="info-detail">
+                        <p>Extras this month</p>
+                        <p>  -0.68</p>
+                    </div>
+                    <div class="info-detail-sub">
+                        <p>Netflix Yearly Subscription</p>
+                        <p>  0</p>
+                    </div>
+                    <div class="info-detail-sub">
+                        <p>Others</p>
+                        <p>  -0.68</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="inv-action">
+                <a href="" class="btn btn-outline-dark">Summary</a>
+                <a href="" class="btn btn-danger">Transfer</a>
+            </div>
+        </div>
+    </div>
+
+</div>
