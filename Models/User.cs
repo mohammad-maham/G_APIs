@@ -14,5 +14,6 @@ public class User
 
     public string Captcha { get; set; }
 
+    public string JWT { get; set; }
 
 }

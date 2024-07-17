@@ -1,6 +1,19 @@
-﻿namespace G_APIs.Models;
+﻿using System;
+using System.Collections.Generic;
+using NodaTime;
 
-public class Wallet
+namespace G_APIs.Models;
+
+public partial class Wallet
 {
-    public int Balance { get; set; } = 123123;
+    public long Id { get; set; }
+
+    public long UserId { get; set; }
+
+    public Instant CreateDate { get; set; }
+
+    public short Status { get; set; }
+
+    public double Balance { get; set; }
+
 }

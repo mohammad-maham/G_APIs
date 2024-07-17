@@ -1,6 +1,9 @@
 using G_APIs.BussinesLogic.Interface;
 using G_APIs.BussinesLogic;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.EntityFrameworkCore;
+using G_APIs.Models;
+ 
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,13 +11,21 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession();
-builder.Services.AddHttpClient<IUserService, UserService>();
+builder.Services.AddLogging();
+
+builder.Services.AddScoped<IAccount, Account>();
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
         options.LoginPath = "/Account/Login";
     });
+
+
+//builder.Services.AddDbContext<GAccountingDbContext>(options =>
+//      options.UseNpgsql(builder.Configuration.GetConnectionString("GAccountingDbContext"),
+//options => options.UseNodaTime()));
+
 //builder.Services.AddSession(options =>
 //{
 //    options.IdleTimeout = TimeSpan.FromSeconds(10);
@@ -48,3 +59,5 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
+
+

@@ -11,7 +11,7 @@
         }, options);
 
         this.each(function () {
-        
+
             var form = $(this);
             form.on('submit', function (e) {
 
