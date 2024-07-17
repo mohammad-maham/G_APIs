@@ -7,14 +7,31 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Views\Shared\EditorTemplates\**" />
     <Compile Remove="wwwroot\css\**" />
     <Compile Remove="wwwroot\lib\**" />
+    <Content Remove="Views\Shared\EditorTemplates\**" />
     <Content Remove="wwwroot\css\**" />
     <Content Remove="wwwroot\lib\**" />
+    <EmbeddedResource Remove="Views\Shared\EditorTemplates\**" />
     <EmbeddedResource Remove="wwwroot\css\**" />
     <EmbeddedResource Remove="wwwroot\lib\**" />
+    <None Remove="Views\Shared\EditorTemplates\**" />
     <None Remove="wwwroot\css\**" />
     <None Remove="wwwroot\lib\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Common\AuthUserAttribute.cs" />
+    <Compile Remove="Common\DataTableExtention.cs" />
+    <Compile Remove="Common\Db.cs" />
+    <Compile Remove="Common\DbHelper.cs" />
+    <Compile Remove="Common\ExceptionHandler.cs" />
+    <Compile Remove="Common\JwtTokenHelper.cs" />
+    <Compile Remove="Common\TableConvertor.cs" />
+    <Compile Remove="Services\AuthUserAttribute.cs" />
+    <Compile Remove="Services\Db.cs" />
+    <Compile Remove="Services\UploadFile.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -23,7 +40,22 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="Views\Shared\EditorTemplates\String.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.7" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.7">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.4" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.Design" Version="1.1.0" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.NodaTime" Version="8.0.4" />
+    <PackageReference Include="RestSharp" Version="111.4.0" />
+    <PackageReference Include="SixLabors.ImageSharp" Version="3.1.4" />
+    <PackageReference Include="System.Drawing.Common" Version="8.0.7" />
   </ItemGroup>
 
 </Project>

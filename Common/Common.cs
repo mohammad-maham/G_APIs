@@ -1,76 +1,51 @@
 ﻿using G_APIs.Models;
+using Microsoft.AspNetCore.Hosting.Server;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Text;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Security.Cryptography;
+using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
+using Font = System.Drawing.Font;
 
 namespace G_APIs.Common;
 
-public static class SessionExtensions
+
+public static class Common
 {
-    public static void Set<T>(this ISession session, string key, T value)
+
+    public static string GetHash(string text)
     {
-        session.SetString(key, JsonConvert.SerializeObject(value));
+        return SHA256.Create()
+            .ComputeHash(Encoding.UTF8.GetBytes(text))
+            .Aggregate("", (x, y) => x + y);
+
     }
 
-    public static T? Get<T>(this ISession session, string key)
+    //public static void BypassCertificateError()
+    //{
+    //    ServicePointManager.ServerCertificateValidationCallback +=
+    //        delegate (
+    //            Object sender1,
+    //            X509Certificate certificate,
+    //            X509Chain chain,
+    //            SslPolicyErrors sslPolicyErrors)
+    //        {
+    //            return true;
+    //        };
+    //}
+    public static string Base64Encode(string txt)
     {
-        var value = session.GetString(key);
-
-        return value == null ? default(T) :
-            JsonConvert.DeserializeObject<T>(value);
-    }
-}
-public class ExternalDataService
-{
-    private readonly HttpClient _httpClient;
-
-    public ExternalDataService(HttpClient httpClient)
-    {
-        _httpClient = httpClient;
+        var txtBytes = System.Text.Encoding.UTF8.GetBytes(txt);
+        return System.Convert.ToBase64String(txtBytes);
     }
 
-    public async Task<IEnumerable<Login>> GetExternalDataAsync()
-    {
-        var response = await _httpClient.GetAsync("https://api.example.com/data");
-        response.EnsureSuccessStatusCode();
-        using var responseStream = await response.Content.ReadAsStreamAsync();
-        return await System.Text.Json.JsonSerializer.DeserializeAsync<IEnumerable<Login>>(responseStream, new JsonSerializerOptions
-        {
-            PropertyNameCaseInsensitive = true  
-        });
-    }
+   
 }
 
-public  static class ExternalApi
-{
-    public async static Task<T> Call<T>()
-    {
-        using (HttpClient client = new HttpClient())
-        {
-            client.BaseAddress = new Uri("https://api.example.com/");
-
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "your_access_token");
-
-            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-            var data = new { Name = "John Doe", Age = 30 };
-            string requestUri = "endpoint"; // Relative URI
-
-            try
-            {
-                HttpResponseMessage response = await client.PostAsJsonAsync(requestUri, data);
-                response.EnsureSuccessStatusCode();
-
-                string responseBody = await response.Content.ReadAsStringAsync();
-                return JsonConvert.DeserializeObject<T>(responseBody);
-            }
-            catch (HttpRequestException e)
-            {
-                return JsonConvert.DeserializeObject<T>(e.Message);
-            }
-        }
-    }
-}
