@@ -1,30 +1,22 @@
 ﻿using System.Drawing.Text;
 using System.Drawing;
 using Microsoft.AspNetCore.Http;
+using G_APIs.BussinesLogic;
+using G_APIs.BussinesLogic.Interface;
 
 namespace G_APIs.Common;
 
 public class Captcha
 {
-    private readonly ISession _session;
-
-    public Captcha(ISession session)
+    public Captcha()
     {
-        _session = session;
     }
-
-    public  string Create()
+    public string Create(out string urlCaptcha)
     {
+
         var strCaptch = new Random().Next().ToString().Substring(0, 4);
-        _session.Set("Captchar", strCaptch);
+        urlCaptcha = @"\Captcha\" + strCaptch + ".jpg";
 
-        var urlCaptcha = @"\Captcha\" + Guid.NewGuid().ToString().Substring(0, 4) + ".jpg";
-        GetCaptcha(strCaptch).Save(Directory.GetCurrentDirectory() + @"\wwwroot\" + urlCaptcha, System.Drawing.Imaging.ImageFormat.Gif);
-        return urlCaptcha;
-    }
-
-    private Bitmap GetCaptcha(string sImageText)
-    {
 
         Bitmap bmpImage = new Bitmap(1, 1);
 
@@ -33,14 +25,20 @@ public class Captcha
 
         Font MyFont = new Font("Arial", 36, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel);
         Graphics MyGraphics = Graphics.FromImage(bmpImage);
-        iWidth = Convert.ToInt32(MyGraphics.MeasureString(sImageText, MyFont).Width) + 20;
-        iHeight = Convert.ToInt32(MyGraphics.MeasureString(sImageText, MyFont).Height) + 4;
+        iWidth = Convert.ToInt32(MyGraphics.MeasureString(strCaptch, MyFont).Width) + 20;
+        iHeight = Convert.ToInt32(MyGraphics.MeasureString(strCaptch, MyFont).Height) + 4;
         bmpImage = new Bitmap(bmpImage, new Size(iWidth, iHeight));
         MyGraphics = Graphics.FromImage(bmpImage);
         MyGraphics.Clear(Color.Beige);
         MyGraphics.TextRenderingHint = TextRenderingHint.AntiAlias;
-        MyGraphics.DrawString(sImageText, MyFont, new SolidBrush(Color.Brown), 10, 4);
+        MyGraphics.DrawString(strCaptch, MyFont, new SolidBrush(Color.Brown), 10, 4);
         MyGraphics.Flush();
-        return (bmpImage);
+
+        bmpImage.Save(Directory.GetCurrentDirectory() + @"\wwwroot\" + urlCaptcha, System.Drawing.Imaging.ImageFormat.Gif);
+        bmpImage.Dispose();
+
+        return strCaptch;
+
     }
+
 }

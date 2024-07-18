@@ -15,4 +15,5 @@ public class Enums
         Store,
         Wallet,
     }
+    
 }

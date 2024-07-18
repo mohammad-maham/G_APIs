@@ -1511,3 +1511,6 @@ code {
             left: 64px;
         }
 }
+.hide{
+    display:none;
+}

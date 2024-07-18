@@ -1,9 +1,7 @@
-using G_APIs.BussinesLogic.Interface;
 using G_APIs.BussinesLogic;
+using G_APIs.BussinesLogic.Interface;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.EntityFrameworkCore;
-using G_APIs.Models;
- 
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession();
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddLogging();
 
 builder.Services.AddScoped<IAccount, Account>();

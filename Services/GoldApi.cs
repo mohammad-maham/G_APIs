@@ -11,36 +11,37 @@ public class GoldApi
     public GoldHost Host { get; set; }
     public string? Authorization { get; set; }
     public string? Action { get; set; }
+    public Method _Method { get; set; }
     public object? Data { get; set; }
 
 
-    private readonly IConfiguration _config;
+    //private readonly IConfiguration _config;
 
-    public GoldApi() { }
 
-    public GoldApi(IConfiguration config)
-    {
-        _config = config;
+    //public GoldApi(IConfiguration config)
+    //{
+    //    _config = config;
 
-    }
+    //}
 
-    public GoldApi(GoldHost host, string action, string authorization, object data)
+    public GoldApi(GoldHost host, string action, object data, Method method = Method.Post, string? authorization = null)
     {
         if (host == GoldHost.Accounting)
-            this.ApiPath = ConfigurationManager.AppSetting["GoldApi:AccountingApi"]!;
+            this.ApiPath = ConfigurationManager.AppSetting["GoldApi:Accounting"]!;
 
         if (host == GoldHost.IPG)
-            this.ApiPath = ConfigurationManager.AppSetting["GoldApi:IPGApi"]!;
+            this.ApiPath = ConfigurationManager.AppSetting["GoldApi:IPG"]!;
 
         if (host == GoldHost.Store)
-            this.ApiPath = ConfigurationManager.AppSetting["GoldApi:StoreApi"]!;
+            this.ApiPath = ConfigurationManager.AppSetting["GoldApi:Store"]!;
 
         if (host == GoldHost.Wallet)
-            this.ApiPath = ConfigurationManager.AppSetting["GoldApi:WalletApi"]!;
+            this.ApiPath = ConfigurationManager.AppSetting["GoldApi:Wallet"]!;
 
         this.Action = action;
-        this.Authorization = authorization ?? "";
+        this.Authorization = authorization;
         this.Data = data;
+        this._Method = method;
     }
 
     public async Task<ApiResult> PostAsync()
@@ -48,13 +49,16 @@ public class GoldApi
         try
         {
             var json = JsonConvert.SerializeObject(this.Data);
-            var client = new RestClient();
+            var client = new RestClient(this.ApiPath + this.Action);
             var request = new RestRequest
             {
-                Method = Method.Post,
+                Method = this._Method,
                 Timeout = TimeSpan.FromSeconds(20),
             };
-            request.AddHeader("Authorization:Bearer", this.Authorization ?? "");
+
+            if (this.Authorization != null)
+                request.AddHeader("Authorization", "Bearer:" + this.Authorization!);
+
             request.AddHeader("Content-Type", "application/json");
             request.AddParameter("application/json", json, ParameterType.RequestBody);
 

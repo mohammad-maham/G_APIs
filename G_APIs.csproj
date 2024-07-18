@@ -40,6 +40,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Views\Shared\_LayoutSign.cshtml.css" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Views\Shared\EditorTemplates\CustomEditor.cshtml" />
     <None Include="Views\Shared\EditorTemplates\String.cshtml" />
   </ItemGroup>
 
