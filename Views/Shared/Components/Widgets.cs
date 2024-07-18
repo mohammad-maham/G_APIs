@@ -37,3 +37,19 @@ public class Chart3ViewComponent : ViewComponent
         return View("Chart", model);
     }
 }
+public class HeaderViewComponent : ViewComponent
+{
+    public IViewComponentResult Invoke(User model)
+    {
+
+        return View("Header", model);
+    }
+}
+public class SidebarViewComponent : ViewComponent
+{
+    public IViewComponentResult Invoke(Menu model)
+    {
+
+        return View("Sidebar", model);
+    }
+}

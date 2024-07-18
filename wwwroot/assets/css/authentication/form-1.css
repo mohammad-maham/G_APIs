@@ -283,10 +283,8 @@ body {
         height: 100%;
     }
 }
-#captcha-field > span{
-    display: flex;
-    flex-direction: row-reverse;
-    justify-content: space-between;
+#captcha-field{
+   
 }
 
     #captcha-field img {
@@ -297,9 +295,12 @@ body {
         float: right;
         width: auto;
         padding: 0;
-        width: 50%;
+        width: 58%;
     }
 
     #captcha-field .invalid-feedback {
         clear: both;
+    }
+    .hide{
+        display:none;
     }

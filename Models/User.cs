@@ -11,9 +11,9 @@ public class User
     public string Phone { get; set; }
     public string Mobile { get; set; }
     public string NationalCode { get; set; }
-
     public string Captcha { get; set; }
-
     public string JWT { get; set; }
+    public string ConfirmCode { get; set; }
+    public string Role { get; set; }
 
 }
