@@ -64,4 +64,13 @@ public class Account : IAccount
 
         return user;
     }
+
+    public async Task<User?> CompleteProfile(User model)
+    {
+        var res = await new GoldApi(GoldHost.Accounting, "/api/User/CompleteProfile", model).PostAsync();
+
+        var user = JsonConvert.DeserializeObject<User>(res.Data) as User;
+
+        return user;
+    }
 }
