@@ -22,7 +22,8 @@ public class HomeController : Controller
 
         var model = new Dashboard() { UserInfo = new User() { Name = "sayid", Role = "Admin" } };
 
-        return !User.Identity!.IsAuthenticated ? RedirectToAction("Login", "Account") : (IActionResult)View(model);
+        //return !User.Identity!.IsAuthenticated ? RedirectToAction("Login", "Account") : (IActionResult)View(model);
+        return View(model);
     }
     public IActionResult Chart1()
     {

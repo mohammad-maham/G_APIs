@@ -48,6 +48,10 @@ public class AccountController : Controller
     {
         return View(model);
     }
+    public IActionResult Profile(User model)
+    {
+        return View(model ?? new User());
+    }
     public async Task<IActionResult> Logout()
     {
         await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
@@ -154,6 +158,27 @@ public class AccountController : Controller
         try
         {
             var user = await _account.SetPassword(model);
+
+            return Json(new
+            {
+                result = true,
+                Data = JsonConvert.SerializeObject(user)
+            });
+        }
+        catch (Exception ex)
+        {
+
+            return Json(new { result = false, message = ex.Message });
+        }
+
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> CompleteProfile(User model)
+    {
+        try
+        {
+            var user = await _account.CompleteProfile(model);
 
             return Json(new
             {
