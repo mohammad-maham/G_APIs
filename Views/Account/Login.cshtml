@@ -8,7 +8,7 @@
     <h1 class="">صفحه ورود به <a href="#"><span class="brand-name">داشبورد</span></a></h1>
     @* <p class="signup-link">      تازه واردید؟ <a asp-action="Signup" asp-controller="Account"> ساخت اکانت جدید</a></p> *@
 
-    <form id="loginForm" class="loginForm clearfix"  action="javascript:void(0);" novalidate>
+    <form id="loginForm" class="loginForm clearfix" action="javascript:void(0);" novalidate>
 
         <div class="form">
 
@@ -43,15 +43,16 @@
             </div>
 
         </div>
+        <div class="field-wrapper clearfix mb-2">
+            <a href="auth_pass_recovery.html" class="forgot-pass-link float-left mt-0">  فراموشی رمز عبور؟</a>
+        </div>
 
-        <div class="field-wrapper">
-            <a href="auth_pass_recovery.html" class="forgot-pass-link float-left">  فراموشی رمز عبور؟</a>
-            <button class="btn btn-primary submit-fn mt-2  float-right" type="submit">  ورود</button>
+        <div class="field-wrapper clearfix">
+            <button class="btn btn-primary submit-fn col-md-5 float-right" type="submit">  ورود</button>
+            <a class="btn btn-success   col-md-5 " asp-controller="Account" asp-action="Signup"> عضویت   </a>
         </div>
     </form>
-    <div class="clearfix ">
-        <a class="btn btn-success btn-block mt-4 btn-sigup" asp-controller="Account" asp-action="Signup"> عضویت   </a>
-    </div>
+   
     @* <p class="terms-conditions">©  تمامی حقوق محفوظ است.</p> *@
 
 </div>
@@ -64,7 +65,7 @@
         url: '/Account/Login',
         jwt: false,
         blockui: true,
-        mixin:true,
+        mixin: true,
 
         success: function (response) {
 
