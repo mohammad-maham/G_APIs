@@ -6,10 +6,9 @@
 <div class="form-content">
 
     <h1 class="">صفحه ورود به <a href="#"><span class="brand-name">داشبورد</span></a></h1>
-    <p class="signup-link">      تازه واردید؟ <a asp-action="Signup" asp-controller="Account"> ساخت اکانت جدید</a></p>
+    @* <p class="signup-link">      تازه واردید؟ <a asp-action="Signup" asp-controller="Account"> ساخت اکانت جدید</a></p> *@
 
-    <form class="loginForm" id="loginForm" action="javascript:void(0);" novalidate>
-
+    <form id="loginForm" class="loginForm clearfix"  action="javascript:void(0);" novalidate>
 
         <div class="form">
 
@@ -43,16 +42,16 @@
                 <p></p>
             </div>
 
-
         </div>
 
         <div class="field-wrapper">
             <a href="auth_pass_recovery.html" class="forgot-pass-link float-left">  فراموشی رمز عبور؟</a>
             <button class="btn btn-primary submit-fn mt-2  float-right" type="submit">  ورود</button>
         </div>
-
     </form>
-
+    <div class="clearfix ">
+        <a class="btn btn-success btn-block mt-4 btn-sigup" asp-controller="Account" asp-action="Signup"> عضویت   </a>
+    </div>
     @* <p class="terms-conditions">©  تمامی حقوق محفوظ است.</p> *@
 
 </div>
@@ -63,24 +62,30 @@
 
         validation: true,
         url: '/Account/Login',
-        JWT: false,
+        jwt: false,
+        blockui: true,
+        mixin:true,
+
         success: function (response) {
+
 
             if (response.result) {
 
                 var obj = JSON.parse(response.data);
-                localStorage.setItem('Authorization', obj.JWT);
+                localStorage.setItem('auth', obj.JWT);
                 window.location.href = '/Home';
 
             } else {
-                $('#loginResult').html(response.message).show();
+                // $('#loginResult').html(response.message).show();
+
+
             }
         },
-        error: function (xhr, status, error) {
-            $('#loginResult').html(response.message).show();
-            // $('#loginResult').html('خطایی رخ داده لطفا دوباره تلاش نمایید.').removeClass('hide');
-            console.error('Form submission failed:', error);
-        }
+        // error: function (xhr, status, error) {
+        //     $('#loginResult').html(response.message).show();
+        //     // $('#loginResult').html('خطایی رخ داده لطفا دوباره تلاش نمایید.').removeClass('hide');
+        //     console.error('Form submission failed:', error);
+        // }
     });
 
 </script>

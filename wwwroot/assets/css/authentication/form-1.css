@@ -53,6 +53,10 @@ body {
         .form-form .form-container .form-content {
             display: block;
             width: 100%;
+            min-width: 380px;
+            border: 1px solid #c78d11;
+            padding: 60px 40px;
+            border-radius: 5px;
         }
 
     .form-form .form-form-wrap .user-meta {
@@ -304,3 +308,21 @@ body {
     .hide{
         display:none;
     }
+/*
+    .form-form .form-container .form-content {
+    display: block;
+    width: 100%;
+    padding: 25px;
+    background: #fff;
+    text-align: center;
+    border-radius: 15px;
+    border: 1px solid #e0e6ed;
+    -webkit-box-shadow: 0 4px 6px 0 rgba(85, 85, 85, 0.0901961), 0 1px 20px 0 rgba(0, 0, 0, 0.08), 0px 1px 11px 0px rgba(0, 0, 0, 0.06);
+    -moz-box-shadow: 0 4px 6px 0 rgba(85, 85, 85, 0.0901961), 0 1px 20px 0 rgba(0, 0, 0, 0.08), 0px 1px 11px 0px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 4px 6px 0 rgba(85, 85, 85, 0.0901961), 0 1px 20px 0 rgba(0, 0, 0, 0.08), 0px 1px 11px 0px rgba(0, 0, 0, 0.06);
+}*/
+
+.btn-sigup {
+    font-size: 17px;
+    font-weight: 700;
+}

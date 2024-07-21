@@ -17,13 +17,14 @@ public class HomeController : Controller
         _logger = logger;
     }
 
-    public IActionResult Index()
+    public IActionResult Index(Dashboard model)
     {
 
-        var model = new Dashboard() { UserInfo = new User() { Name = "sayid", Role = "Admin" } };
-
         //return !User.Identity!.IsAuthenticated ? RedirectToAction("Login", "Account") : (IActionResult)View(model);
-        return View(model);
+         var logedin = User.Identity!.IsAuthenticated;
+
+         return !logedin ? RedirectToAction("Login", "Account") : (IActionResult)View(model);
+
     }
     public IActionResult Chart1()
     {

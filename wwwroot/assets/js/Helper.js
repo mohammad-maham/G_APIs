@@ -1,4 +1,4 @@
-
+﻿
 (function ($) {
     $.fn.ajaxForm = function (options) {
 
@@ -7,10 +7,15 @@
             url: '',
             method: 'POST',
             validation: true,
-            JWT: true,
+            jwt: true,
+            miniloader: false,
+            blockui: false,
+            mixin: false,
+
             additionalData: {},
             success: function (response) { },
             error: function (xhr, status, error) { }
+
         }, options);
 
         this.each(function () {
@@ -26,7 +31,15 @@
                 else {
 
                     var _data = form.serialize()
-                    console.log(settings.additionalData);
+
+                    if (!settings.miniloader && !settings.blockui)
+                        ShowLoader();
+
+                    if (settings.miniloader)
+                        ShowMiniLoader(this);
+
+                    if (settings.blockui)
+                        BlockUi(this);
 
                     $.ajax({
                         url: settings.url || form.attr('action'),
@@ -34,24 +47,50 @@
                         data: _data,
                         beforeSend: function (xhr) {
 
-                            $('#load_screen').show()
-
                             if (settings.Authorization) {
 
-                                var auth = localStorage.getItem('myKey');
+                                var auth = localStorage.getItem('auth');
                                 xhr.setRequestHeader('Authorization', 'Bearer ' + auth);
 
                             }
                         },
-                        success: function (response) {
 
-                            $('#load_screen').hide()
+                        success: (response) => {
+
+                            if (settings.mixin)
+                                if (!response.result)
+                                    if (response.message != null || response.message != "")
+                                        toast({
+                                            type: 'success',
+                                            title: response.message,
+                                            padding: '1em',
+                                        })
+
                             settings.success(response);
-
                         },
-                        error: function (xhr, status, error) {
-                            $('#load_screen').hide()
+
+                        error: (xhr, status, error) => {
+
+                            if (settings.mixin)
+                                toast({
+                                    type: 'error',
+                                    title: 'بروز خطا لطفا دقایقی بعد تلاش کنید.',
+                                    padding: '1em',
+                                })
+
+                            console.error('Form submission failed:', error);
+
                             settings.error(xhr, status, error);
+                        },
+                        complete: () => {
+
+                            HideLoader();
+
+                            if (settings.miniloader)
+                                HideMiniLoader(this);
+
+                            if (settings.blockui)
+                                UnBlock(this);
                         }
                     });
                 }
@@ -62,4 +101,78 @@
 
         return this;
     };
+
 })(jQuery);
+
+const toast = swal.mixin({
+    toast: true,
+    position: 'bottom-start',
+    showConfirmButton: false,
+    timer: 5000,
+    padding: '1em',
+    background: 'rgb(95, 193, 94)',
+    color: '#000'
+});
+
+let loader = $('<div id="loader">'
+    + '<div class="loader mx-auto" ></div>'
+    + '</div>');
+
+let ShowLoader = () => {
+    loader.appendTo('body').show();
+}
+
+let HideLoader = () => {
+    loader.remove();
+}
+
+let ShowMiniLoader = (form) => {
+
+    let submit = $(form).find('[type = "submit"]');
+    let text = $(submit).html();
+
+    $(submit).data('text', text);
+
+    let miniloader = '<div class="spinner-border text-white mr-2 align-self-center loader-sm "></div>لطفا صبر کنید . . .'
+
+    $(submit).attr('disabled', true).html(miniloader);
+
+
+}
+
+let HideMiniLoader = (form) => {
+
+    let submit = $(form).find('[type = "submit"]');
+    let text = $(submit).data('text');
+
+    $(submit).attr('disabled', false).html(text);
+
+}
+
+let BlockUi = (form) => {
+
+    var block = $(form).parent();
+
+    $(block).block({
+
+        ignoreIfBlocked: true,
+        message: 'لطفا صبر کنید ...',
+        overlayCSS: {
+            backgroundColor: '#000',
+            opacity: 0.4,
+            cursor: 'wait'
+        },
+        css: {
+            border: 0,
+            color: '#fff',
+            padding: 0,
+            backgroundColor: 'transparent'
+        }
+    });
+}
+
+let UnBlock = (form) => {
+
+    var block = $(form).parent();
+    $(block).unblock();
+}
