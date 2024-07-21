@@ -7,9 +7,9 @@ namespace G_APIs.Models;
 
 public class ApiResult
 {
-    public int ResultCode { get; set; }
+    public int StatusCode { get; set; }
     public string? Message { get; set; }
-    public dynamic? Data { get; set; }
+    public string? Data { get; set; }
 
     public ApiResult()
     {
@@ -17,7 +17,7 @@ public class ApiResult
 
     public ApiResult(int resultCode, string message="",dynamic? data=null)
     {
-        this.ResultCode = resultCode;
+        this.StatusCode = resultCode;
         this.Message = message;
         this.Data = data;
     }

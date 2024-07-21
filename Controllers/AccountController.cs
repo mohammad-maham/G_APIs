@@ -22,25 +22,25 @@ public class AccountController : Controller
 
     public IActionResult Login()
     {
-        var strCaptcha = new Captcha().Create(out string urlCaptcha);
+        //var strCaptcha = new Captcha().Create(out string urlCaptcha);
 
-        _session.Set("Captcha", strCaptcha);
-        var model = new User() { Captcha = urlCaptcha };
+        //_session.Set("Captcha", strCaptcha);
 
-        return View(model);
+        return View(new User() { Captcha = GetCaptcha() });
     }
 
-    public IActionResult Signup(User model)
+    public IActionResult Signup()
     {
         //var strCaptcha = new Captcha().Create(out string urlCaptcha);
 
         //_session.Set("Captcha", strCaptcha);
         //var model = new User() { Captcha = urlCaptcha };
 
-        return View(model ?? new Models.User());
+        return View(new User() { Captcha = GetCaptcha() });
+
     }
 
-    public    IActionResult Header(User model)
+    public IActionResult Header(User model)
     {
         return View(model);
     }
@@ -63,25 +63,31 @@ public class AccountController : Controller
     {
         try
         {
+
             var captcha = _session.Get<string>("Captcha");
 
             if (captcha != null && model.Captcha != null && model.Captcha != captcha)
                 return Json(new { result = false, message = "متن تصویر اشتباه است." });
 
-            var loginResult = await _account.Login(model.Username, model.Password);
+            var res = await _account.Login(model);
 
-            if (loginResult != null)
+            if (res != null)
             {
-                var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.Name, model.Username)
-            };
 
-                var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                if (res.StatusCode == 0)
+                    return Json(new { result = false, message = res.Message });
 
-                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
+                if (res.StatusCode == 200 && res.Data != null)
+                {
+                    var claims = new List<Claim> { new Claim(ClaimTypes.Name, model.NationalCode) };
+                    var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
 
-                return Json(new { result = true });
+                    //return Json(new { result = 3, message = "ثبت نام با موفقیت انجام شد" });
+                    return Json(new { result = 3, message = res.Message });
+
+                }
+
             }
 
             return Json(new { result = false, message = " رمز عبور یا نام کاربری اشتباه است " });
@@ -91,63 +97,52 @@ public class AccountController : Controller
 
             return Json(new { result = false, message = ex.Message });
         }
-      
+
     }
-    
+
+
     [HttpPost]
-    public async Task<IActionResult> GetConfirmCode(User model)
+    public async Task<IActionResult> SignUp(User model)
     {
         try
         {
+            var captcha = _session.Get<string>("Captcha");
+
+            if (captcha != null && model.Captcha != null && model.Captcha != captcha)
+                return Json(new { result = false, message = "متن تصویر اشتباه است." });
+
+
             model.Mobile = model.Mobile.StartsWith("0") ? model.Mobile.Remove(0, 1) : model.Mobile;
 
-            var user = await _account.GetConfirmCode(model);
+            var res = await _account.SignUp(model);
 
-            return Json(new
-            {
-                result = true,
-                Data = JsonConvert.SerializeObject(user)
-            });
-        }
-        catch (Exception ex)
-        {
-
-            return Json(new { result = false, message = ex.Message });
-        }
-      
-    }
-
-    [HttpPost]
-    public async Task<IActionResult> Register(User model)
-    {
-        try
-        {
-            var confirmCode = _session.Get<string>("ConfirmCode");
-
-            if (confirmCode != null && model.ConfirmCode != null && model.ConfirmCode != confirmCode)
-                return Json(new { result = true, message = "کد موبایل وارد شده اشتباه است" });
-
-            var res = await _account.Register(model);
 
             if (res != null)
             {
-                var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.Name, model.Username)
-            };
 
-                var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                if (res.StatusCode != 200)
+                    return Json(new { result = false, message = res.Message });
 
-                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
+                if (res.Data != null)
+                {
+                    var user = JsonConvert.DeserializeObject<User>(res.Data);
 
-                return Json(new { result = 3, message = "ثبت نام با موفقیت انجام شد" });
+                    if (user.Id != null)
+                        return Json(new { result = true, data = JsonConvert.SerializeObject(user) });
+
+                }
+
             }
 
-            return Json(new { result = false, message = "" });
+            return Json(new { result = false, message = "بروز خطا لطفا دوباره تلاش کنید." });
         }
         catch (Exception ex)
         {
-            return Json(new { result = false, message = ex.Message });
+            return Json(new
+            {
+                result = false,
+                message = ex.Message
+            });
         }
 
     }
@@ -157,13 +152,31 @@ public class AccountController : Controller
     {
         try
         {
-            var user = await _account.SetPassword(model);
+            model.UserName = model.NationalCode;
+            var res = await _account.SetPassword(model);
 
-            return Json(new
+            if (res != null)
             {
-                result = true,
-                Data = JsonConvert.SerializeObject(user)
-            });
+
+                if (res.StatusCode != 200)
+                    return Json(new { result = false, message = res.Message });
+
+                if (res.Data != null)
+                {
+                    var user = JsonConvert.DeserializeObject<User>(res.Data);
+
+                    if (user.Id != null)
+                        return Json(new 
+                        {
+                            result = true,
+                            message="ثبت نام با موفقیت انجام شد."
+                        });
+
+                }
+
+            }
+
+            return Json(new { result = false, message = "بروز خطا لطفا دوباره تلاش کنید." });
         }
         catch (Exception ex)
         {
@@ -191,6 +204,15 @@ public class AccountController : Controller
 
             return Json(new { result = false, message = ex.Message });
         }
+    }
+    public string GetCaptcha()
+    {
+
+        var strCaptcha = new Captcha().Create(out string urlCaptcha);
+
+        _session.Set("Captcha", strCaptcha);
+
+        return urlCaptcha;
 
     }
 }

@@ -2,6 +2,9 @@
 using G_APIs.Models;
 using RestSharp;
 using static G_APIs.Models.Enums;
+using Newtonsoft.Json.Linq;
+using System.Text.Json.Serialization;
+using System.Text.Json.Nodes;
 
 namespace G_APIs.Services;
 
@@ -63,10 +66,7 @@ public class GoldApi
             request.AddParameter("application/json", json, ParameterType.RequestBody);
 
             var response = await client.ExecuteAsync(request);
-
-            var res =
-                 JsonConvert.DeserializeObject<ApiResult>(response.Content!)
-                 ?? new ApiResult() { ResultCode = 0 };
+            var res = JsonConvert.DeserializeObject<ApiResult>(response.Content);
 
             return res;
 
@@ -75,7 +75,7 @@ public class GoldApi
         {
             return new ApiResult()
             {
-                ResultCode = -1,
+                StatusCode = -1,
                 Message = ex.Message
             };
         }

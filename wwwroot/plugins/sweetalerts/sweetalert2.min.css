@@ -309,24 +309,28 @@ body.swal2-no-backdrop > .swal2-shown {
   overflow-y: auto;
   display: none;
   position: relative;
+  background:#4BB543 !important;
   max-width: 100%; }
-  .swal2-popup.swal2-toast {
-    width: 300px;
-    padding: 0 15px;
-    -webkit-box-orient: horizontal;
-    -webkit-box-direction: normal;
-    -ms-flex-direction: row;
-    flex-direction: row;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
-    align-items: center;
-    overflow-y: hidden;
-    -webkit-box-shadow: 0 0 10px #d9d9d9;
-    box-shadow: 0 0 10px #d9d9d9; }
-    .swal2-popup.swal2-toast .swal2-title {
-      max-width: 300px;
-      font-size: 16px;
-      text-align: left; }
+    .swal2-popup.swal2-toast {
+        width: 300px;
+        padding: 0 15px;
+        -webkit-box-orient: horizontal;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: row;
+        flex-direction: row;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        overflow-y: hidden;
+        -webkit-box-shadow: none !important;
+        box-shadow: none !important
+    }
+        .swal2-popup.swal2-toast .swal2-title {
+            max-width: 300px;
+            color: #000 !important;
+            font-size: 16px;
+            text-align: left;
+        }
     .swal2-popup.swal2-toast .swal2-content {
       font-size: 14px;
       text-align: left; }
@@ -410,7 +414,7 @@ body.swal2-no-backdrop > .swal2-shown {
   .swal2-popup.swal2-loading {
     overflow-y: hidden; }
   .swal2-popup .swal2-title {
-    color: #fff !important;
+    color: #fff;
     font-size: 30px;
     text-align: center;
     font-weight: 600;
