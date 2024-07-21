@@ -44,8 +44,9 @@
             </div>
 
         </div>
-        <div class="field-wrapper">
-            <button class="btn btn-primary submit-fn mt-2  float-right" type="submit">  ثبت نام</button>
+        <div class="field-wrapper clearfix">
+            <button class="btn btn-primary submit-fn col-md-5 float-right" type="submit">  ثبت نام</button>
+            <a class="btn btn-success   col-md-5 " asp-controller="Account" asp-action="Login"> ورود   </a>
         </div>
 
     </form>
@@ -74,14 +75,13 @@
                 <p></p>
             </div>
         </div>
-        <div class="field-wrapper">
-            <button class="btn btn-primary submit-fn mt-2  float-right" type="submit">  ثبت    </button>
-        </div>
 
+        <div class="field-wrapper clearfix">
+            <button class="btn btn-primary submit-fn col-md-5 float-right" type="submit">  ثبت    </button>
+            <a class="btn btn-success   col-md-5 " asp-controller="Account" asp-action="Login"> ورود   </a>
+        </div>
     </form>
-    <div class="clearfix ">
-        <a class="btn btn-success btn-block mt-4 btn-sigup" asp-controller="Account" asp-action="Login"> ورود   </a>
-    </div>
+    
     @* <p class="terms-conditions">©  تمامی حقوق محفوظ است.</p> *@
 
 </div>
