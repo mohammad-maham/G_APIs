@@ -69,16 +69,11 @@
 
         success: function (response) {
 
-
             if (response.result) {
 
                 var obj = JSON.parse(response.data);
                 localStorage.setItem('auth', obj.JWT);
                 window.location.href = '/Home';
-
-            } else {
-                // $('#loginResult').html(response.message).show();
-
 
             }
         },

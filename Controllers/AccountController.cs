@@ -112,10 +112,9 @@ public class AccountController : Controller
                 return Json(new { result = false, message = "متن تصویر اشتباه است." });
 
 
-            model.Mobile = model.Mobile.StartsWith("0") ? model.Mobile.Remove(0, 1) : model.Mobile;
+            model.Mobile = model.Mobile!.StartsWith("0") ? model.Mobile.Remove(0, 1) : model.Mobile;
 
             var res = await _account.SignUp(model);
-
 
             if (res != null)
             {
@@ -123,12 +122,12 @@ public class AccountController : Controller
                 if (res.StatusCode != 200)
                     return Json(new { result = false, message = res.Message });
 
-                if (res.Data != null)
+                if (res.StatusCode ==200 && res.Data != null)
                 {
                     var user = JsonConvert.DeserializeObject<User>(res.Data);
 
                     if (user.Id != null)
-                        return Json(new { result = true, data = JsonConvert.SerializeObject(user) });
+                        return Json(new { result = true, message="لطفا کد ارسال شده به موبایل را وارد کنید", data = JsonConvert.SerializeObject(user) });
 
                 }
 
@@ -152,7 +151,7 @@ public class AccountController : Controller
     {
         try
         {
-            model.UserName = model.NationalCode;
+            model.Username = model.NationalCode;
             var res = await _account.SetPassword(model);
 
             if (res != null)
@@ -161,18 +160,8 @@ public class AccountController : Controller
                 if (res.StatusCode != 200)
                     return Json(new { result = false, message = res.Message });
 
-                if (res.Data != null)
-                {
-                    var user = JsonConvert.DeserializeObject<User>(res.Data);
-
-                    if (user.Id != null)
-                        return Json(new 
-                        {
-                            result = true,
-                            message="ثبت نام با موفقیت انجام شد."
-                        });
-
-                }
+                if (res.StatusCode == 200 )
+                    return Json(new { result = true, message = res.Message });
 
             }
 
