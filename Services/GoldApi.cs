@@ -51,7 +51,7 @@ public class GoldApi
     {
         try
         {
-            var json = JsonConvert.SerializeObject(this.Data);
+            //var json = JsonConvert.SerializeObject(this.Data);
             var client = new RestClient(this.ApiPath + this.Action);
             var request = new RestRequest
             {
@@ -63,7 +63,11 @@ public class GoldApi
                 request.AddHeader("Authorization", "Bearer:" + this.Authorization!);
 
             request.AddHeader("Content-Type", "application/json");
-            request.AddParameter("application/json", json, ParameterType.RequestBody);
+            
+            //request.AddParameter("username", "1382532326");
+            //request.AddParameter("password", "admin");
+            
+            request.AddJsonBody( this.Data!);
 
             var response = await client.ExecuteAsync(request);
             var res = JsonConvert.DeserializeObject<ApiResult>(response.Content);

@@ -27,6 +27,5 @@ public class User
 
     public object? Otpinfo { get; set; }
 
-    public string? UserName { get; set; }
 
 }

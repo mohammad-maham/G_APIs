@@ -57,14 +57,20 @@
 
                         success: (response) => {
 
+                            debugger 
                             if (settings.mixin)
-                                if (!response.result)
-                                    if (response.message != null || response.message != "")
+                                if (response.message != undefined && response.message != null && response.message != "") { }
+                                    if (response.result)
                                         toast({
-                                            type: 'success',
+                                            type:'success',
                                             title: response.message,
-                                            padding: '1em',
                                         })
+                                    else
+                                        toast({
+                                            type: 'error',
+                                            title: response.message,
+                                        })
+
 
                             settings.success(response);
                         },
@@ -83,7 +89,7 @@
                             settings.error(xhr, status, error);
                         },
                         complete: () => {
-
+                            debugger
                             HideLoader();
 
                             if (settings.miniloader)

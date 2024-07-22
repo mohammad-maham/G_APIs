@@ -295,22 +295,23 @@ body.swal2-no-backdrop > .swal2-shown {
     margin: 0 !important; } }
 
 .swal2-popup {
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  background-color: #fff;
-  font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif;
-  border-radius: 5px;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  text-align: center;
-  overflow-x: hidden;
-  overflow-y: auto;
-  display: none;
-  position: relative;
-  background:#4BB543 !important;
-  max-width: 100%; }
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    background-color: #fff;
+    font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif;
+    border-radius: 5px;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    text-align: center;
+    overflow-x: hidden;
+    overflow-y: auto;
+    display: none;
+    position: relative;
+    background: #d6e0eb !important;
+    max-width: 100%;
+}
     .swal2-popup.swal2-toast {
         width: 300px;
         padding: 0 15px;
