@@ -12,7 +12,6 @@ public class User
     public string? Mobile { get; set; }
     public string? NationalCode { get; set; }
     public string? Captcha { get; set; }
-    public string? JWT { get; set; }
     public long? OTP { get; set; }
     public string? Role { get; set; }
     

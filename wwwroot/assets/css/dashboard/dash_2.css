@@ -21,7 +21,9 @@
     margin-bottom: 0;
     color: #515365;
 }
-.widget .widget-content {}
+    .widget .widget-content {
+        border: 1px dashed;
+    }
 
 
 /*

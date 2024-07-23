@@ -10,6 +10,13 @@ namespace G_APIs.Services;
 
 public class GoldApi
 {
+    private readonly ILogger<GoldApi> _logger;
+
+    public GoldApi(ILogger<GoldApi> logger)
+    {
+        _logger = logger;
+    }
+
     private string? ApiPath { get; set; }
     public GoldHost Host { get; set; }
     public string? Authorization { get; set; }
@@ -60,9 +67,9 @@ public class GoldApi
             };
 
             if (this.Authorization != null)
-                request.AddHeader("Authorization", "Bearer:" + this.Authorization!);
+                request.AddHeader("Authorization",  this.Authorization!);
 
-            request.AddHeader("Content-Type", "application/json");
+            //request.AddHeader("Content-Type", "application/json");
             
             //request.AddParameter("username", "1382532326");
             //request.AddParameter("password", "admin");
@@ -70,7 +77,7 @@ public class GoldApi
             request.AddJsonBody( this.Data!);
 
             var response = await client.ExecuteAsync(request);
-            var res = JsonConvert.DeserializeObject<ApiResult>(response.Content);
+            var res = JsonConvert.DeserializeObject<ApiResult>(response.Content!);
 
             return res;
 
