@@ -4,7 +4,7 @@
 
     <ul class="navbar-nav theme-brand flex-row  text-center">
         <li class="nav-item theme-logo">
-            <a href="index.html">
+            <a asp-controller="Home" asp-action="Index">
                 <img src="~/assets/img/90x90.jpg" class="navbar-logo" alt="logo">
             </a>
         </li>
@@ -26,7 +26,12 @@
             </a>
             <ul class="collapse submenu recent-submenu mini-recent-submenu list-unstyled show" id="dashboard" data-parent="#accordionExample">
                 <li>
-                    <a asp-controller="Account" asp-action="CompleteAddress">
+                    <a asp-controller="Home" asp-action="Index">
+                        <span>  داشبورد    </span>
+                    </a>
+                </li>
+                <li>
+                    <a asp-controller="Account" asp-action="AddressInfo">
                         <span>  تکمیل اطلاعات آدرس</span>
                     </a>
                 </li>
