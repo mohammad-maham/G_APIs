@@ -56,6 +56,10 @@ public class AccountController : Controller
     {
         return View(model ?? new BankAccount());
     }
+    public IActionResult AddressInfo(User model)
+    {
+        return View(model ?? new User());
+    }
     public async Task<IActionResult> Logout()
     {
         await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
