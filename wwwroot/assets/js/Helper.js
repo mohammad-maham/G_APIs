@@ -47,22 +47,19 @@
                         data: _data,
                         beforeSend: function (xhr) {
 
-                            if (settings.Authorization) {
-
-                                var auth = localStorage.getItem('auth');
+                            var auth = localStorage.getItem('auth');
+                            if (auth !=null)  
                                 xhr.setRequestHeader('Authorization', 'Bearer ' + auth);
-
-                            }
                         },
 
                         success: (response) => {
 
-                            debugger 
+                            debugger
                             if (settings.mixin)
-                                if (response.message != undefined && response.message != null && response.message != "") { }
+                                if (response.message != undefined && response.message != null && response.message != "")
                                     if (response.result)
                                         toast({
-                                            type:'success',
+                                            type: 'success',
                                             title: response.message,
                                         })
                                     else

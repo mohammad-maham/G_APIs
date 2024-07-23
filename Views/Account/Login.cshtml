@@ -68,11 +68,11 @@
         mixin: true,
 
         success: function (response) {
-
+            debugger
+            console.log(response)
             if (response.result) {
 
-                var obj = JSON.parse(response.data);
-                localStorage.setItem('auth', obj.JWT);
+                localStorage.setItem('auth', response.data);
                 window.location.href = '/Home';
 
             }

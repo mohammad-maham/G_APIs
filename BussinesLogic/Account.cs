@@ -12,15 +12,19 @@ public class Account : IAccount
 {
     private readonly ILogger<Account> _logger;
 
-    public Account(ILogger<Account> logger)
+    private readonly IHttpContextAccessor _httpContextAccessor;
+
+
+    public Account(ILogger<Account> logger, IHttpContextAccessor httpContextAccessor)
     {
         _logger = logger;
+        _httpContextAccessor = httpContextAccessor;
     }
 
     public async Task<ApiResult> Login(User model)
     {
 
-        var res = await new GoldApi(GoldHost.Accounting, "/api/User/SignIn", model,Method.Get).PostAsync();
+        var res = await new GoldApi(GoldHost.Accounting, "/api/User/SignIn", model).PostAsync();
 
         //var user = JsonConvert.DeserializeObject<User>(res.Message!);
 
@@ -44,9 +48,9 @@ public class Account : IAccount
         return res;
     }
 
-    public async Task<ApiResult> CompleteProfile(User model)
+    public async Task<ApiResult> CompleteProfile(User model, string token)
     {
-        var res = await new GoldApi(GoldHost.Accounting, "/api/User/CompleteProfile", model).PostAsync();
+        var res = await new GoldApi(GoldHost.Accounting, "/api/User/CompleteProfile", model,authorization:token).PostAsync();
 
         return res;
     }

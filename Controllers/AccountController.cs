@@ -52,6 +52,10 @@ public class AccountController : Controller
     {
         return View(model ?? new User());
     }
+    public IActionResult BankAccount(BankAccount model)
+    {
+        return View(model ?? new BankAccount());
+    }
     public async Task<IActionResult> Logout()
     {
         await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
@@ -79,12 +83,11 @@ public class AccountController : Controller
 
                 if (res.StatusCode == 200 && res.Data != null)
                 {
-                    var claims = new List<Claim> { new Claim(ClaimTypes.Name, model.NationalCode) };
+                    var claims = new List<Claim> { new Claim(ClaimTypes.Name, (model.Username! ?? model.NationalCode!)) };
                     var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                     await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
 
-                    //return Json(new { result = 3, message = "ثبت نام با موفقیت انجام شد" });
-                    return Json(new { result = 3, message = res.Message });
+                     return Json(new { result = true, data = res.Data });
 
                 }
 
@@ -122,12 +125,12 @@ public class AccountController : Controller
                 if (res.StatusCode != 200)
                     return Json(new { result = false, message = res.Message });
 
-                if (res.StatusCode ==200 && res.Data != null)
+                if (res.StatusCode == 200 && res.Data != null)
                 {
                     var user = JsonConvert.DeserializeObject<User>(res.Data);
 
                     if (user.Id != null)
-                        return Json(new { result = true, message="لطفا کد ارسال شده به موبایل را وارد کنید", data = JsonConvert.SerializeObject(user) });
+                        return Json(new { result = true, message = "لطفا کد ارسال شده به موبایل را وارد کنید", data = JsonConvert.SerializeObject(user) });
 
                 }
 
@@ -160,7 +163,7 @@ public class AccountController : Controller
                 if (res.StatusCode != 200)
                     return Json(new { result = false, message = res.Message });
 
-                if (res.StatusCode == 200 )
+                if (res.StatusCode == 200)
                     return Json(new { result = true, message = res.Message });
 
             }
@@ -175,25 +178,6 @@ public class AccountController : Controller
 
     }
 
-    [HttpPost]
-    public async Task<IActionResult> CompleteProfile(User model)
-    {
-        try
-        {
-            var user = await _account.CompleteProfile(model);
-
-            return Json(new
-            {
-                result = true,
-                Data = JsonConvert.SerializeObject(user)
-            });
-        }
-        catch (Exception ex)
-        {
-
-            return Json(new { result = false, message = ex.Message });
-        }
-    }
     public string GetCaptcha()
     {
 
@@ -202,6 +186,46 @@ public class AccountController : Controller
         _session.Set("Captcha", strCaptcha);
 
         return urlCaptcha;
+
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> CompleteProfile(User model)
+    {
+        try
+        {
+            var token = Request.Headers["Authorization"].FirstOrDefault();
+
+            if (token == null || !token.StartsWith("Bearer "))
+            {
+                //return Unauthorized("Missing or invalid Authorization header.");
+                return Json(new { result = false, message = "ورود غیر مجاز لطفا دوباره وارد شوید." });
+            }
+
+            var res = await _account.CompleteProfile(model, token);
+
+            if (res != null)
+            {
+
+                if (res.StatusCode != 200)
+                    return Json(new { result = false, message = res.Message });
+
+                if (res.StatusCode == 200 && res.Data != null)
+                  return Json(new { result = true, message = res.Message });
+
+
+            }
+
+            return Json(new { result = false, message = "بروز خطا لطفا دوباره تلاش کنید." });
+        }
+        catch (Exception ex)
+        {
+            return Json(new
+            {
+                result = false,
+                message = ex.Message
+            });
+        }
 
     }
 }
