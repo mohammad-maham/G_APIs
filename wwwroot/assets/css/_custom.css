@@ -38,6 +38,7 @@ input[type="number"]{
     filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.3));
     border: 1px solid #999;
     transform: scale(1.1);
+    padding:2px;
 }
 
 @keyframes scaleUp {

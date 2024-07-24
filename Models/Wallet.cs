@@ -10,7 +10,7 @@ public partial class Wallet
 
     public long UserId { get; set; }
 
-    public Instant CreateDate { get; set; }
+    public string? CreateDate { get; set; }
 
     public short Status { get; set; }
 
