@@ -3,7 +3,7 @@ using G_APIs.Models;
 using G_APIs.Services;
 using Newtonsoft.Json;
 using RestSharp;
-using static G_APIs.Models.Enums;
+using static G_APIs.Common.Enums;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace G_APIs.BussinesLogic;

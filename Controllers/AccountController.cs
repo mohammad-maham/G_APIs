@@ -40,14 +40,14 @@ public class AccountController : Controller
 
     }
 
-    public IActionResult Header(User model)
-    {
-        return View(model);
-    }
-    public IActionResult Sidebar(Menu model)
-    {
-        return View(model);
-    }
+    //public IActionResult Header(User model)
+    //{
+    //    return View(model);
+    //}
+    //public IActionResult Sidebar(Menu model)
+    //{
+    //    return View(model);
+    //}
     public IActionResult Profile(User model)
     {
         return View(model ?? new User());
@@ -60,6 +60,7 @@ public class AccountController : Controller
     {
         return View(model ?? new User());
     }
+
     public async Task<IActionResult> Logout()
     {
         await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
