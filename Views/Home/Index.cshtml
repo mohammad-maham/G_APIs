@@ -55,7 +55,11 @@
 
 
     <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-12 layout-spacing">
-        @await Component.InvokeAsync("Wallet", new Wallet() { Balance = 2222 })
+         @await Component.InvokeAsync("Wallet", new WalletCurrency() { Id = 1 }) 
+
+        @* @Html.RenderAction("Wallet", "Home", new WalletCurrency() { Id = 1 }); *@
+
+        @* @(await Html.RenderAction("Wallet", "Home")) *@
     </div>
 
 
