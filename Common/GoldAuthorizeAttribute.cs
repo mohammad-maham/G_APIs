@@ -13,11 +13,11 @@ public class GoldAuthorizeAttribute : Attribute, IAuthorizationFilter
 {
     public void OnAuthorization(AuthorizationFilterContext context)
     {
-        StringValues user = context.HttpContext.Request.Headers[HeaderNames.Authorization];
+        StringValues user = context.HttpContext.Request.Cookies["auth"];
 
         AuthenticationHeaderValue.TryParse(user, out AuthenticationHeaderValue? headerValue);
 
-        if (headerValue == null || headerValue.Parameter == null)
+        if (headerValue == null )
         {
             context.Result = new JsonResult(new { message = "Unauthorized!" })
             { StatusCode = StatusCodes.Status401Unauthorized };

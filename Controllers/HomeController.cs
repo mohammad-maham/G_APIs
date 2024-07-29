@@ -23,7 +23,7 @@ public class HomeController : Controller
     public IActionResult Index(Dashboard model)
     {
 
-        //return !User.Identity!.IsAuthenticated ? RedirectToAction("Login", "Account") : (IActionResult)View(model);
+        //return View(model);
         var logedin = User.Identity!.IsAuthenticated;
 
         return !logedin ? RedirectToAction("Login", "Account") : (IActionResult)View(model);

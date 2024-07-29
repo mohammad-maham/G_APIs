@@ -46,10 +46,10 @@
                         method: settings.method || form.attr('method'),
                         data: _data,
                         beforeSend: function (xhr) {
-
-                            var auth = localStorage.getItem('auth');
+          
+                            var auth = GetCookie('auth');
                             if (auth !=null)  
-                                xhr.setRequestHeader('Authorization', 'Bearer ' + auth);
+                                xhr.setRequestHeader('Authorization',  auth);
                         },
 
                         success: (response) => {
@@ -86,7 +86,7 @@
                             settings.error(xhr, status, error);
                         },
                         complete: () => {
-                            debugger
+               
                             HideLoader();
 
                             if (settings.miniloader)
@@ -178,4 +178,10 @@ let UnBlock = (form) => {
 
     var block = $(form).parent();
     $(block).unblock();
+}
+
+function GetCookie(name) {
+    var value = "; " + document.cookie;
+    var parts = value.split("; " + name + "=");
+    if (parts.length == 2) return parts.pop().split(";").shift();
 }

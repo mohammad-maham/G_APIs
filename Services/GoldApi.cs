@@ -67,7 +67,7 @@ public class GoldApi
             };
 
             if (this.Authorization != null)
-                request.AddHeader("Authorization",  this.Authorization!);
+                request.AddHeader("Authorization", "Bearer "+  this.Authorization!);
 
             //request.AddHeader("Content-Type", "application/json");
             
@@ -79,7 +79,10 @@ public class GoldApi
             var response = await client.ExecuteAsync(request);
             var res = JsonConvert.DeserializeObject<ApiResult>(response.Content!);
 
-            return res;
+            if (res!=null && res.Message!=null && res.Message.Contains("unauthorize", StringComparison.CurrentCultureIgnoreCase))
+                res.Message = "ورود غیر مجاز لطفا دوباره وارد شوید.";
+
+            return res!;
 
         }
         catch (Exception ex)

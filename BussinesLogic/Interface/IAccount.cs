@@ -8,4 +8,6 @@ public interface IAccount
         Task<ApiResult> SetPassword(User model);
         Task<ApiResult> SignUp(User model);
         Task<ApiResult> CompleteProfile(User model,string token);
+        Task<ApiResult> SubmitContact(User model, string token);
+        Task<ApiResult> GetUserInfo(User model, string token);
 }
