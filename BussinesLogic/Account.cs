@@ -55,5 +55,17 @@ public class Account : IAccount
         return res;
     }
 
+    public async Task<ApiResult> SubmitContact(User model, string token)
+    {
+        var res = await new GoldApi(GoldHost.Accounting, "/api/User/SubmitContact", model, authorization: token).PostAsync();
 
+        return res;
+    }
+
+    public async Task<ApiResult> GetUserInfo(User model, string token)
+    {
+        var res = await new GoldApi(GoldHost.Accounting, "/api/User/GetUserInfo", model, authorization: token).PostAsync();
+
+        return res;
+    }
 }

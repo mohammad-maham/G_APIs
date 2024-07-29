@@ -22,43 +22,38 @@ public class AccountController : Controller
 
     public IActionResult Login()
     {
-        //var strCaptcha = new Captcha().Create(out string urlCaptcha);
-
-        //_session.Set("Captcha", strCaptcha);
 
         return View(new User() { Captcha = GetCaptcha() });
     }
 
     public IActionResult Signup()
     {
-        //var strCaptcha = new Captcha().Create(out string urlCaptcha);
-
-        //_session.Set("Captcha", strCaptcha);
-        //var model = new User() { Captcha = urlCaptcha };
-
         return View(new User() { Captcha = GetCaptcha() });
-
     }
 
-    //public IActionResult Header(User model)
-    //{
-    //    return View(model);
-    //}
-    //public IActionResult Sidebar(Menu model)
-    //{
-    //    return View(model);
-    //}
+    [GoldAuthorize]
     public IActionResult Profile(User model)
     {
         return View(model ?? new User());
     }
+
+    [GoldAuthorize]
     public IActionResult BankAccount(BankAccount model)
     {
         return View(model ?? new BankAccount());
     }
-    public IActionResult AddressInfo(User model)
+
+    [GoldAuthorize]
+    public async Task<IActionResult> AddressInfo(User model)
     {
-        return View(model ?? new User());
+        var token = Request.Cookies["auth"]!;
+        var res = await _account.GetUserInfo(model, token);
+        var user = new User();
+
+        if (res != null && res.StatusCode == 200 && res.Data != null)
+            user = JsonConvert.DeserializeObject<User>(res.Data)!;
+
+        return View(user);
     }
 
     public async Task<IActionResult> Logout()
@@ -92,7 +87,7 @@ public class AccountController : Controller
                     var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                     await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
 
-                     return Json(new { result = true, data = res.Data });
+                    return Json(new { result = true, data = res.Data });
 
                 }
 
@@ -216,7 +211,47 @@ public class AccountController : Controller
                     return Json(new { result = false, message = res.Message });
 
                 if (res.StatusCode == 200 && res.Data != null)
-                  return Json(new { result = true, message = res.Message });
+                    return Json(new { result = true, message = res.Message });
+
+
+            }
+
+            return Json(new { result = false, message = "بروز خطا لطفا دوباره تلاش کنید." });
+        }
+        catch (Exception ex)
+        {
+            return Json(new
+            {
+                result = false,
+                message = ex.Message
+            });
+        }
+
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> SubmitContact(User model)
+    {
+        try
+        {
+            var token = Request.Headers["Authorization"].FirstOrDefault();
+
+            if (token == null || !token.StartsWith("Bearer "))
+            {
+                //return Unauthorized("Missing or invalid Authorization header.");
+                return Json(new { result = false, message = "ورود غیر مجاز لطفا دوباره وارد شوید." });
+            }
+
+            var res = await _account.SubmitContact(model, token);
+
+            if (res != null)
+            {
+
+                if (res.StatusCode != 200)
+                    return Json(new { result = false, message = res.Message });
+
+                if (res.StatusCode == 200 && res.Data != null)
+                    return Json(new { result = true, message = res.Message });
 
 
             }

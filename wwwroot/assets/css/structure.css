@@ -983,10 +983,11 @@ code {
 
 .sidebar-closed > #content {
     margin-right: 54px;
+    position:relative;
 }
 
 #sidebar .theme-brand {
-    background-color: #1b55e2;
+    background-color: #bb8332;
     padding: 0.9px 24px 0.9px 12px;
     border-bottom: 1px solid #ebedf2;
     border-radius: 6px 6px 0 0;
@@ -1561,4 +1562,29 @@ code {
 }
 
 
+footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 99%;
+    height: 30px;
+    text-align: left;
+    direction: rtl;
+    color: #fff;
+    background-color: #d79519;
+    align-content: center;
+    align-content: start;
+    flex-wrap: unset;
+    align-content: baseline;
+    vertical-align: middle;
+    line-height: 35px;
+    border-radius: 5px;
+    box-shadow: 0 0 9px #999;
+    left: 0.5%;
+}
 
+    footer p {
+        color: #fff;
+        font-size: 17px;
+        text-align:center;
+    }

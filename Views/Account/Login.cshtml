@@ -52,7 +52,7 @@
             <a class="btn btn-success   col-md-5 " asp-controller="Account" asp-action="Signup"> عضویت   </a>
         </div>
     </form>
-   
+
     @* <p class="terms-conditions">©  تمامی حقوق محفوظ است.</p> *@
 
 </div>
@@ -68,12 +68,15 @@
         mixin: true,
 
         success: function (response) {
-            debugger
+    
             console.log(response)
             if (response.result) {
 
-                localStorage.setItem('auth', response.data);
-                window.location.href = '/Home';
+                document.cookie = "auth=" + response.data;
+
+                setTimeout(() => {
+                    window.location.href = '/Home';
+                }, 500)
 
             }
         },
